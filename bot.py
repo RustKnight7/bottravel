@@ -14,7 +14,7 @@ token=load_dotenv()
 token = os.getenv('TOKEN')
 print(token)
 
-commandlist = {'/start': 'start_message(message)', '/help' : 'help_message(message)', '/rzd' : 'rzd_message(message)', '/weather' : 'weather_message(message)'}
+commandlist = {'/start': 'start_message(message)', '/help' : 'help_message(message)', '/rzd' : 'rzd_message(message)', '/weather' : 'weather_message(message)', '/music' : 'music_message(message)'}
 
 lovestickerpack = ['CAADAgAD-wUAAtJaiAEK_F4c8hn9yxYE', 'CAADAgADcgkAAgi3GQIEU9tYxpNH9xYE', 'CAADAgADEgYAAtJaiAH3r7K1PEN3dBYE', 'CAADAgADgQkAAgi3GQJMZcFWk15u8RYE', 'CAADAgADgwkAAgi3GQKYlDU84Ixx3RYE', 'CAADAgADGgYAAtJaiAEu2wLZUu4NEBYE', 'CAADAgADBQADwDZPE_lqX5qCa011FgQ', 'CAADAgADFQADwDZPE81WpjthnmTnFgQ', 'CAADAgADBgADwDZPE8fKovSybnB2FgQ', 'CAADAgADFgADwDZPE2Ah1y2iBLZnFgQ', 'CAADAgADDQADwDZPE6T54fTUeI1TFgQ', 'CAADAgAD0wADVp29CvUyj5fVEvk9FgQ']
 
@@ -72,6 +72,7 @@ def date_registration(message):
         print(toplace)
         print(dateregistration)
         Sendler(fromInput=fromplace,fromOutput=toplace,date=dateregistration).send()
+        bot.send_message(message.chat.id, 'Ищу билеты по выбранному напрвалению')
         bot.send_message(message.chat.id, 'Железнодорожные маршруты по вашим требованиям: '+"\n"+reader.read())
     else:
         exec(commandlist[message.text])    
@@ -103,13 +104,13 @@ def weather_information(message):
             temp = weather.get_temperature('celsius')['temp']
             wind = weather.get_wind()['speed']
             print(weather)
-            bot.send_message(message.from_user.id, "Погода города " + message.text + "\nТемпература: " + str(temp) + "°C" + "\nНа улице: " + str.title(status) + "\nСкорость Ветра: " + str(wind) + "м/c")
+            bot.send_message(message.chat.id, "Погода города " + message.text + "\nТемпература: " + str(temp) + "°C" + "\nНа улице: " + str.title(status) + "\nСкорость Ветра: " + str(wind) + "м/c")
             if temp >= 15:
-                bot.send_message(message.from_user.id, "Погода-mood: Cамое-то ")
+                bot.send_message(message.chat.id, "Погода-mood: Cамое-то ")
             elif 15 > temp  and temp > 0:
-                bot.send_message(message.from_user.id, "Погода-mood: Накинь что нибудь на себя ")
+                bot.send_message(message.chat.id, "Погода-mood: Накинь что нибудь на себя ")
             elif temp < 0 and -25 < temp:
-                bot.send_message(message.from_user.id, "Погода-mood: Одевайся мать, пора воевать ")
+                bot.send_message(message.chat.id, "Погода-mood: Одевайся мать, пора воевать ")
             elif temp <= -25:
                 bot.send_message(message.from_user.id, "Погода-mood: Ты умрёшь, если уйдёшь")
         except pyowm.exceptions.api_response_error.NotFoundError:
@@ -124,7 +125,7 @@ def help_message(message):
     bot.send_message(message.chat.id, '1./start - эта функция позволяет Вам сбросить наш диалог и вернуться к исходной точке\n2./weather - позволяет вам узнать состояние погоды в данном месте\n3./help - эта  функция сработала прямо сейчас')
     bot.send_sticker(message.chat.id,random.choice(lovestickerpack))
 @bot.message_handler(commands=['music'])
-def music(message):
+def music_message(message):
     for i in range(3):
         n=random.randint(1,2)
         audio = open(str(n)+".mp3", mode='rb')
